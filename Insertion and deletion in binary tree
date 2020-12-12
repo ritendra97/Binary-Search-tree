@@ -1,0 +1,88 @@
+//Insertion and deletion in binary tree
+class Node
+{
+	int data;
+	Node left;
+	Node right;
+	Node(int data)
+	{
+		this.data=data;
+		this.left=null;
+		this.right=null;
+	}
+}
+public class BST 
+{
+	static Node root;
+	static Node insertion(Node node,int key)
+	{
+		if(node==null)
+		{
+			node = new Node(key);
+			return node;
+		}
+		if(node.data<key)
+			node.right=insertion(node.right,key);
+		else if(node.data>key)
+			node.left=insertion(node.left,key);
+		return node;
+	}
+	static Node deletion(Node node,int key)
+	{
+		if(node == null)
+			return node;
+		if(key>node.data)
+			node.right = deletion(node.right,key);
+		else if(key<node.data)
+			node.left= deletion(node.left,key);
+		else
+		{
+			if(node.left==null)
+			{
+				return node.right;
+			}
+			else if(node.right== null)
+			{
+				return node.left;
+			}
+			if(node.left!=null && node.right!=null)
+			{
+				node.data=minvalue(node.right);
+				node.right = deletion(node.right,node.data);
+			}
+		}
+		return node;
+	}
+	static int minvalue(Node node)
+	{
+		int min = node.data;
+		while(node.left!=null)
+		{
+			min=node.left.data;
+			node=node.left;
+		}
+		return min;
+	}
+	static void inorder(Node node)
+	{
+		if(node == null)
+			return;
+		inorder(node.left);
+		System.out.println(node.data);
+		inorder(node.right);
+	}
+	public static void main(String[] args) 
+	{
+		root = new Node(50);
+		root.left = new Node(30);
+		root.right = new Node(70);
+		root.left.left=new Node(20);
+		root.left.right=new Node(40);
+		root.right.left=new Node(60);
+		root.right.right=new Node(80);
+		inorder(root);
+		deletion(root,50);
+		System.out.println("After deletion");
+		inorder(root);
+	}
+}
