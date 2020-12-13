@@ -1,0 +1,55 @@
+Construct BST from its given level order traversal
+import java.util.*;
+class Node
+{
+	int data;
+	Node left;
+	Node right;
+	Node(int data)
+	{
+		this.data=data;
+	}
+}
+public class BST 
+{
+	static Node root;
+	static Node constructbinarytree(Node node,int data)
+	{
+		if(node==null)
+		{
+			node = new Node(data);
+			return node;
+		}
+		if(data<node.data)
+			node.left=constructbinarytree(node.left,data);
+		if(data>node.data)
+			node.right=constructbinarytree(node.right,data);
+		return node;
+	}
+	static Node answer(int arr[],int n)
+	{
+		if(n==0)
+			return null;
+		for(int i=0;i<n;i++)
+		{
+			root =constructbinarytree(root,arr[i]);
+		}
+		return root;
+	}
+	static void printInorder(Node node) 
+    { 
+        if (node == null) { 
+            return; 
+        } 
+        printInorder(node.left); 
+        System.out.print(node.data + " "); 
+        printInorder(node.right); 
+    }
+	public static void main(String[] args)
+	{
+		int arr[]= {7, 4, 12, 3, 6, 8, 1, 5, 10};
+		int n=arr.length;
+		Node ans=answer(arr,n);
+		printInorder(ans);
+	}
+}
