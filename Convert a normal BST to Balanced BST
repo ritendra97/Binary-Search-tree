@@ -1,0 +1,63 @@
+//Convert a normal BST to Balanced BST
+import java.util.*;
+class Node
+{
+	int data;
+	Node left;
+	Node right;
+	Node(int data)
+	{
+		this.data=data;
+	}
+}
+public class BST 
+{
+	static Node root;
+	static void storeBStnodes(Node node,Vector<Node> v)
+	{
+		if(node==null)
+			return;
+		storeBStnodes(node.left,v);
+		v.add(node);
+		storeBStnodes(node.right,v);
+	}
+	static Node buildTreeUtil(Node node,Vector<Node> v,int start,int end)
+	{
+		if(start>end)
+			return null;
+		int mid = (start+end)/2;
+		Node root = v.get(mid);
+		root.left=buildTreeUtil(root,v,start,mid-1);
+		root.right=buildTreeUtil(root,v,mid+1,end);
+		return root;
+	}
+	static Node buildTree(Node node)
+	{
+		Vector<Node> v = new Vector<>();
+		storeBStnodes(node,v);
+		int n=v.size();
+		return buildTreeUtil(node,v,0,n-1);
+	}
+	static void preOrder(Node node)  
+    { 
+        if (node == null) 
+            return; 
+        System.out.print(node.data + " "); 
+        preOrder(node.left); 
+        preOrder(node.right); 
+    }
+	public static void main(String[] args) 
+	{
+		BST tree = new BST(); 
+        tree.root = new Node(10); 
+        tree.root.left = new Node(8); 
+        tree.root.left.left = new Node(7); 
+        tree.root.left.left.left = new Node(6); 
+        tree.root.left.left.left.left = new Node(5); 
+  
+        Node ans = tree.buildTree(tree.root); 
+        System.out.println("Preorder traversal of balanced BST is :"); 
+        tree.preOrder(ans);
+	}
+
+}
