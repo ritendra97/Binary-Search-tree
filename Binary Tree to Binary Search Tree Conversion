@@ -1,0 +1,61 @@
+Binary Tree to Binary Search Tree Conversion
+import java.util.*;
+class Node
+{
+	int data;
+	Node left;
+	Node right;
+	Node(int data)
+	{
+		this.data=data;
+	}
+}
+public class BST 
+{
+	static int i=0;
+	static void createinordervalue(Node node,int arr[],int Index[])
+	{
+		if(node==null)
+			return;
+		createinordervalue(node.left,arr,Index);
+		node.data=arr[Index[0]];
+		Index[0]+=1;
+		createinordervalue(node.right,arr,Index);
+	}
+	static void createinorderarray(Node node,int arr[],int Index[])
+	{
+		if(node==null)
+			return;
+		createinorderarray(node.left,arr,Index);
+		arr[Index[0]]=node.data;
+		Index[0]+=1;
+		createinorderarray(node.right,arr,Index);
+	}
+	static void constructBTtoBSt(Node node)
+	{
+		int arr[] = new int[5];
+		int Index[] = new int[1];
+		createinorderarray(node, arr,Index);
+		Arrays.sort(arr);
+		Index[0]=0;
+		createinordervalue(node,arr,Index);	
+	}
+	static void inorder(Node node)
+	{
+		if(node==null)
+			return;
+		inorder(node.left);
+		System.out.println(node.data+" ");
+		inorder(node.right);
+	}
+	public static void main(String[] args) 
+	{
+		Node root = new Node(10);
+		root.left=new Node(2);
+		root.right = new Node(7);
+		root.left.left= new Node(8);
+		root.left.right = new Node(4);
+		constructBTtoBSt(root);
+		inorder(root);
+	}
+}
