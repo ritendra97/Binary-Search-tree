@@ -1,0 +1,41 @@
+Construct BST from sorted Array
+import java.util.*;
+class Node
+{
+	int data;
+	Node left;
+	Node right;
+	Node(int data)
+	{
+		this.data=data;
+	}
+}
+public class BST 
+{
+	static Node conversion(int arr[],int start, int end)
+	{
+		if(start>end)
+			return null;
+		int mid = (start+end)/2;
+		Node ans = new Node(arr[mid]);
+		ans.left=conversion(arr,start,mid-1);
+		ans.right=conversion(arr,mid+1,end);
+		return ans;
+	}
+	static void preOrder(Node node) { 
+        if (node == null) { 
+            return; 
+        } 
+        System.out.print(node.data + " "); 
+        preOrder(node.left); 
+        preOrder(node.right); 
+    }
+	public static void main(String[] args) 
+	{ 
+        int arr[] = new int[]{1, 2, 3, 4, 5, 6, 7}; 
+        int n = arr.length; 
+        Node root = conversion(arr, 0, n - 1); 
+        System.out.println("Preorder traversal of constructed BST"); 
+        preOrder(root);
+	}
+}
