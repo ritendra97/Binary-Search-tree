@@ -1,0 +1,65 @@
+K-th Smallest element
+class Node
+{
+	int data;
+	Node left;
+	Node right;
+	Node(int data)
+	{
+		this.data=data;
+	}
+}
+public class BST 
+{
+	Node root;
+	static int answer(Node node,int k)
+	{
+		Node curr=node;
+		int count=0;
+		int kthsmallest=0;
+		while(curr!=null)
+		{
+			if(curr.left==null)
+			{
+				count++;
+				if(count==k)
+					kthsmallest=curr.data;
+				curr=curr.right;
+			}
+			else
+			{
+				Node pred=curr.left;
+				while(pred.right!=null && pred.right!=curr)
+				{
+					pred=pred.right;
+				}
+				if(pred.right==null) 
+				{
+					pred.right=curr;
+					curr=curr.left;
+				}
+				else
+				{
+					pred.right=null;
+					count++;
+					if(count==k)
+						kthsmallest=curr.data;
+					curr=curr.right;
+				}
+			}
+		}
+		return kthsmallest;
+	}
+	public static void main(String[] args) 
+	{
+		BST tree = new BST();
+		tree.root = new Node(1);
+        tree.root.left = new Node(2);
+        tree.root.right = new Node(3);
+        tree.root.left.left = new Node(4);
+        tree.root.left.right = new Node(5);
+        tree.root.right.left = new Node(6);
+        tree.root.right.right = new Node(7);
+        System.out.println(tree.answer(tree.root, 1));
+	}
+}
