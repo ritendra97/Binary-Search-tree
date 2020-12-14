@@ -1,0 +1,52 @@
+Check if the given array can represent Level Order Traversal of Binary Search Tree
+import java.util.*;
+class Node
+{
+	int data;
+	int min,max;
+}
+public class BST 
+{
+	static boolean levelOrderIsOfBST(int arr[], int n)
+	{
+		Queue<Node> q = new LinkedList<>();
+		Node new_node = new Node();
+		int i=0;
+		new_node.data= arr[i++];
+		new_node.min=Integer.MIN_VALUE;
+		new_node.max=Integer.MAX_VALUE;
+		q.add(new_node);
+		while(i!=n && q.size()>0)
+		{
+			Node temp = q.remove();
+			new_node = new Node();
+			if(i<n && arr[i]<temp.data && arr[i]>temp.min)
+			{
+				new_node.data = arr[i++];
+				new_node.min=temp.min;
+				new_node.max=temp.data;
+				q.add(new_node);
+			}
+			new_node = new Node();
+			if(i<n && arr[i]>temp.data && arr[i]<temp.max)
+			{
+				new_node.data = arr[i++];
+				new_node.min=temp.data;
+				new_node.max=temp.max;
+				q.add(new_node);
+			}
+		}
+		if(i==n)
+			return true;
+		return false;
+	}
+	public static void main(String[] args) 
+	{
+		int arr[] = {7, 4, 12, 3, 6, 8, 1, 5, 10};  
+	    int n = arr.length;  
+	    if (levelOrderIsOfBST(arr, n)) 
+	        System.out.print( "Yes"); 
+	    else
+	        System.out.print( "No");
+	}
+}
