@@ -1,0 +1,67 @@
+Two nodes of a BST are swapped, correct the BST
+class Node
+{
+	int data;
+	Node left;
+	Node right;
+	Node(int data)
+	{
+		this.data=data;
+		this.left=null;
+		this.right=null;
+	}
+}
+public class BST 
+{
+	static Node firststartpointer=null;
+	static Node lastendpointer=null;
+	static Node prv_Node=null;
+	static void answer(Node node)
+	{
+		if(node==null)
+			return ;
+		answer(node.left);
+		if(prv_Node!=null)
+		{
+			if(prv_Node.data>node.data)
+			{
+				if(firststartpointer==null)
+				{
+					firststartpointer=prv_Node;
+				}
+				lastendpointer=node;
+			}
+		}
+		prv_Node=node;
+		answer(node.right);
+	}
+	static void swap(Node node)
+	{
+		answer(node);
+		int temp=firststartpointer.data;
+		firststartpointer.data=lastendpointer.data;
+		lastendpointer.data=temp;
+	}
+	static void inorder(Node node)
+	{
+		if(node==null)
+			return;
+		inorder(node.left);
+		System.out.println(node.data+" " );
+		inorder(node.right);
+	}
+	public static void main(String[] args) 
+	{
+		Node root = new Node(6); 
+        root.left = new Node(10); 
+        root.right = new Node(2); 
+        root.left.left = new Node(1); 
+        root.left.right = new Node(3); 
+        root.right.right = new Node(12); 
+        root.right.left = new Node(7);
+        inorder(root);
+        swap(root);
+        System.out.println("New");
+        inorder(root);
+	}
+}
