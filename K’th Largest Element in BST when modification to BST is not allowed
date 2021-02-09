@@ -1,0 +1,43 @@
+//K’th Largest Element in BST when modification to BST is not allowed
+import java.util.*;
+class Node
+{
+    int data;
+    Node left;
+    Node right;
+    Node(int data)
+    {
+        this.data = data;
+        left=null;
+        right=null;
+    }
+}
+public class BST 
+{
+	int count=1;
+	int ans=0;
+	public int kthLargest(Node root,int K)
+    {
+        if(root==null)
+        {
+            return 0;
+        }
+        kthLargest(root.right,K);
+        if(count==K)
+        {
+        	ans=root.data;
+        }
+        count++;
+        kthLargest(root.left,K);
+        
+        return ans;
+    }
+	public static void main(String[] args) 
+	{
+		BST tree = new BST(); 
+		Node root = new Node(9);
+		root.right = new Node(10);
+		System.out.println(tree.kthLargest(root,1));
+	}
+
+}
