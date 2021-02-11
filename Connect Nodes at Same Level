@@ -1,0 +1,48 @@
+Connect Nodes at Same Level 
+class Tree
+{
+    /*
+    Node class is Defined as follows:
+    class Node{
+        int data;
+        Node left;
+        Node right;
+        Node nextRight;
+        Node(int data){
+            this.data = data;
+            left=null;
+            right=null;
+            nextRight = null;
+        }
+    }
+    */
+    // Need to solve this using recursion
+    public static void connect(Node p)
+    {
+        Queue<Node> q = new LinkedList<>();
+        q.add(p);
+        while(!q.isEmpty())
+        {
+            int size = q.size();
+            Node prev=null;
+            while(size>0)
+            {
+                Node temp = q.remove();
+                if(prev!=null)
+                {
+                    prev.nextRight=temp;
+                }
+                prev = temp;
+                if(temp.left!=null)
+                {
+                    q.add(temp.left);
+                }
+                if(temp.right!=null)
+                {
+                    q.add(temp.right);
+                }
+                size--;
+            }
+        }
+    }
+}
