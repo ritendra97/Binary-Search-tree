@@ -36,3 +36,58 @@ public class BST
         System.out.println(answer(tree.root));  
 	}
 }
+class Node
+{
+	int data;
+	Node left;
+	Node right;
+	Node(int data)
+	{
+		this.data=data;
+	}
+}
+class Pair
+{
+	boolean isbst;
+	int min;
+	int max;
+}
+public class BST 
+{
+	Node root;
+	static Pair isBSTUtil(Node root)
+    {
+        if(root == null)
+        {
+        	Pair bp = new Pair();
+        	bp.min = Integer.MAX_VALUE;
+        	bp.max = Integer.MIN_VALUE;
+        	bp.isbst = true;
+        	return bp;
+        }
+        Pair l = isBSTUtil(root.left);
+        Pair r = isBSTUtil(root.right);
+        Pair mp = new Pair();
+        mp.isbst = l.isbst && r.isbst && (root.data>=l.max && root.data<=r.min);
+        mp.min = Math.min(root.data, Math.min(l.min, r.min));
+        mp.min = Math.max(root.data, Math.min(l.max, r.max));
+        return mp;
+    } 
+    static boolean isBST(Node root)
+    {
+        if(root==null)
+           return true;
+        Pair ans   = isBSTUtil(root);
+        return ans.isbst;
+    }
+	public static void main(String[] args) 
+	{
+		BST tree = new BST(); 
+        tree.root = new Node(4); 
+        tree.root.left = new Node(3); 
+        tree.root.right = new Node(6); 
+        tree.root.left.left = new Node(1); 
+        tree.root.left.right = new Node(2); 
+        System.out.println(isBST(tree.root));  
+	}
+}
