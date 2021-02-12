@@ -1,0 +1,15 @@
+//Add all greater values to every node in a BST 
+int sum =0;
+    public Node modify(Node root)
+    {
+        if(root==null)
+        {
+            return null;
+        }
+        modify(root.right);
+        sum=sum+root.data;
+        root.data=sum;
+        modify(root.left);
+        return root;
+    }
+    
