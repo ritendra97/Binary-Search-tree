@@ -1,0 +1,144 @@
+import java.util.*;
+class Node
+{
+	int data;
+	Node left;
+	Node right;
+	Node(int data)
+	{
+		this.data=data;
+	}
+}
+public class BinaryTree 
+{
+	static List<Integer> ans = new ArrayList<Integer>();
+	public static List<Integer> merge(Node root1,Node root2)
+    {
+		if(root1==null)
+			return null;
+		if(root2==null)
+			return null;
+		Stack<Node> s1 = new Stack<>();
+		Stack<Node> s2 = new Stack<>();
+		Node curr1=root1;
+		Node curr2=root2;
+		Node top1 = null;
+		Node top2 = null;
+		while(curr1!=null)
+		{
+			s1.push(curr1);
+			curr1=curr1.left;
+		}
+		while(curr2!=null)
+		{
+			s2.push(curr2);
+			curr2=curr2.left;
+		}
+		while(!s1.isEmpty() && !s2.isEmpty())
+		{
+			if(s1.peek().data<s2.peek().data)
+			{
+				top1 = s1.pop();
+				ans.add(top1.data);
+				if(top1.right!=null)
+				{
+					curr1=top1.right;
+					while(curr1!=null)
+					{
+						s1.push(curr1);
+						curr1=curr1.left;
+					}
+				}
+			}
+			else if(s1.peek().data>s2.peek().data)
+			{
+				top2 = s2.pop();
+				ans.add(top2.data);
+				if(top2.right!=null)
+				{
+					curr2=top2.right;
+					while(curr2!=null)
+					{
+						s2.push(curr2);
+						curr2=curr2.left;
+					}
+				}
+			}
+			else
+			{
+				top1 = s1.pop();
+				top2 = s2.pop();
+				ans.add(top1.data);
+				ans.add(top2.data);
+				if(top2.right!=null)
+				{
+					curr2=top2.right;
+					while(curr2!=null)
+					{
+						s2.push(curr2);
+						curr2=curr2.left;
+					}
+				}
+				if(top1.right!=null)
+				{
+					curr1=top1.right;
+					while(curr1!=null)
+					{
+						s1.push(curr1);
+						curr1=curr1.left;
+					}
+				}
+			}
+		}
+		if(!s1.isEmpty())
+		{
+			while(!s1.isEmpty())
+			{
+				top1 = s1.pop();
+				ans.add(top1.data);
+				if(top1.right!=null)
+				{
+					curr1=top1.right;
+					while(curr1!=null)
+					{
+						s1.push(curr1);
+						curr1=curr1.left;
+					}
+				}
+			}
+		}
+		else 
+		{
+			while(!s2.isEmpty())
+			{
+				top2 = s2.pop();
+				ans.add(top2.data);
+				if(top2.right!=null)
+				{
+					curr2=top2.right;
+					while(curr2!=null)
+					{
+						s2.push(curr2);
+						curr2=curr2.left;
+					}
+				}
+			}
+		}
+		return ans;
+    }
+	public static void main(String[] args) 
+	{
+		Node root1 = null, root2 = null; 
+
+        root1 = new Node(12) ; 
+        root1.left = new Node(9);
+        root1.left.left = new Node(6);
+        root1.left.right = new Node(11); 
+     
+        root2 = new Node(8); 
+        root2.left = new Node(5); 
+        root2.right = new Node(10);
+        root2.left.left = new Node(2);
+        System.out.println(merge(root1,root2));
+	}
+}
