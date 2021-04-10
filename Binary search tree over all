@@ -1,0 +1,303 @@
+import java.util.*;
+class Node
+{
+	int data;
+	Node left;
+	Node right;
+	Node(int data)
+	{
+		this.data=data;
+		this.left = null;
+		this.right =null;
+	}
+}
+public class BinarySearchTree 
+{
+	public static int max(Node root)
+	{
+		if(root.right!=null)
+			return max(root.right);
+		else 
+			return root.data;
+	}
+	public static int min(Node root)
+	{
+		if(root.left!=null)
+			return min(root.left);
+		else 
+			return root.data;
+	}
+	public static boolean find(Node root,int k)
+	{
+		if(root==null)
+			return false;
+		if(k<root.data)
+			return find(root.left,k);
+		else if(k>root.data)
+			return find(root.right,k);
+		else
+			return true;
+	}
+	public static Node add(Node root,int k)
+	{
+		if(root==null)
+			return new Node(k);
+		
+		if(k<root.data)
+			root.left =  add(root.left,k);
+		else if(k>root.data)
+			root.right = add(root.right,k);
+		
+		return root;
+	}
+	public static Node remove(Node root,int value)
+	{
+		if(root==null)
+			return null;
+		
+		if(value<root.data)
+		{
+			remove(root.left,value);
+		}
+		else if(value>root.data)
+			remove(root.right,value);
+		else
+		{
+			if(root.left!=null && root.right!=null)
+			{
+				int lmx = max(root.left);
+				root.data = lmx;
+				root.left= remove(root.left,lmx);
+				return root;		
+			}
+			else if(root.left!=null)
+			{
+				return root.left;
+			}
+			else if(root.right!=null)
+			{
+				return root.right;
+			}
+			else
+			{
+				return null;
+			}
+		}
+		return root;
+	}
+	static int sum = 0;
+	public static Node replacesumwithLargest(Node root)
+	{
+		if(root == null)
+			return null;
+		
+		replacesumwithLargest(root.left);
+		
+		int ov = root.data;
+		root.data =sum;
+		sum+=root.data;
+		
+		replacesumwithLargest(root.right);
+		
+		return root;
+	}
+	public static int LCS(Node node,int x,int y)
+	{
+		if(node==null)
+			return 0;
+		if(Math.max(x, y)<node.data)
+			return LCS(node.left,x,y);
+		else if(Math.min(x, y)>node.data)
+			return LCS(node.right,x,y);
+		else 
+			return node.data;
+	}
+	public static void printinRange(Node root,int d1,int d2)
+	{
+		if(root==null)
+			return;
+		
+		if(d1>root.data && d2>root.data)
+			printinRange(root.right,d1,d2);
+		else if(d1<root.data && d2<root.data)
+			printinRange(root.left,d1,d2);
+		else
+		{
+			printinRange(root.left,d1,d2);
+			System.out.println(root.data);
+			printinRange(root.right,d1,d2);
+		}
+	}
+	public static void targetSum1(Node node,Node root,int tar)
+	{
+		if(root==null)
+			return;
+		
+		targetSum1(node,root.left,tar);
+		
+		if((tar-root.data)>root.data)
+		{
+			if(find(node,(tar-root.data))==true)
+				System.out.println((tar-root.data)+" "+root.data);
+		}
+		
+		targetSum1(node,root.right,tar);
+	}
+	
+	public static void targetSum2Util(Node root,int x,ArrayList<Integer> ans)
+	{
+		if(root==null)
+			return;
+		targetSum2Util(root.left,x,ans);
+		ans.add(root.data);
+		targetSum2Util(root.right,x,ans);
+	}
+	public static void targetSum2(Node root,int x)
+	{
+		ArrayList<Integer> ans = new ArrayList<Integer>();
+		
+		targetSum2Util(root,x,ans);
+		
+		int start =0;
+		int end = ans.size()-1;
+		
+		while(start<end)
+		{
+			int p = ans.get(start);
+			int q = ans.get(end);
+			if((p+q)>x)
+			{
+				end--;
+			}
+			else if((p+q)<x)
+			{
+				start++;
+			}
+			else
+			{
+				System.out.println(p+" "+q);
+				start++;
+				end--;
+			}
+		}
+	}
+	static class pair
+	{
+		int state;
+		Node node;
+		pair(Node node,int data)
+		{
+			this.state=data;
+			this.node=node;
+		}
+	}
+	public static void bestApproachOfTargetSum(Node node,int target)
+	{
+		Stack<pair> ls = new Stack<pair>();
+		Stack<pair> rs = new Stack<pair>();
+		
+		ls.push(new pair(node,0));
+		rs.push(new pair(node,0));
+		
+		int left = leftsideoriginalinorder(node,ls);
+		int right= rightsiderevrseinorder(node,rs);
+		while(left<right)
+		{	
+			if(left+right>target)
+			{
+				right= rightsiderevrseinorder(node,rs);
+			}
+			else if(left+right<target)
+			{
+				left = leftsideoriginalinorder(node,ls);
+			}
+			else {
+				System.out.println(left+" "+right);
+				right= rightsiderevrseinorder(node,rs);
+				left = leftsideoriginalinorder(node,ls);
+			}
+		}
+	}
+	public static int leftsideoriginalinorder(Node node,Stack<pair> l)
+	{	
+		while(!l.isEmpty())
+		{
+			pair top = l.peek();
+			
+			if(top.state==0)
+			{
+				if(top.node.left!=null)
+				{
+					l.push(new pair(top.node.left,0));
+				}
+				top.state++;
+			}
+			else if(top.state==1)
+			{
+				if(top.node.right!=null)
+				{
+					l.push(new pair(top.node.right,0));
+				}
+				top.state++;
+				
+				return node.data;
+			}
+			else
+			{
+				l.pop();
+			}
+		}
+		return 0;
+	}
+	public static int rightsiderevrseinorder(Node node,Stack<pair> r)
+	{	
+		while(!r.isEmpty())
+		{
+			pair top = r.peek();
+			
+			if(top.state==0)
+			{
+				if(top.node.right!=null)
+				{
+					r.push(new pair(top.node.right,0));
+				}
+				top.state++;
+			}
+			else if(top.state==1)
+			{
+				if(top.node.left!=null)
+				{
+					r.push(new pair(top.node.left,0));
+				}
+				top.state++;
+				
+				return node.data;
+			}
+			else
+			{
+				r.pop();
+			}
+		}
+		return 0;
+		
+	}
+	public static void main(String[] args) 
+	{
+		Node root = new Node(6);
+		root.left  = new Node(4);
+		root.right  = new Node(7);
+		root.left.left  = new Node(2);
+		root.left.right  = new Node(3);
+		
+//		System.out.println(max(root));
+//		System.out.println(min(root));
+//		System.out.println(find(root,4));
+//		System.out.println(LCS(root,4,7));
+		
+		//printinRange(root,3,4);
+		//targetSum1(root,root,8);
+		//targetSum2(root,8);
+		
+		bestApproachOfTargetSum(root,8);
+	}
+}
