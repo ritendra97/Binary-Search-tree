@@ -1,0 +1,88 @@
+import java.util.*;
+
+// below solution is in O(n2)
+class TreeNode
+{
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode() {}
+    TreeNode(int val) { this.val = val; }
+    TreeNode(int val, TreeNode left, TreeNode right)
+    {
+        this.val = val;
+        this.left = left;
+        this.right = right;
+    }
+}
+class ListNode
+{
+	int val;
+	ListNode next;
+
+	ListNode(int data)
+	{
+		this.val=data;
+		this.next=null;
+	}
+}
+public class BinarySearchTree 
+{
+	public static ListNode getmid(ListNode node)
+	{
+		ListNode fast = node;
+		ListNode slow = node;
+		ListNode prevSlow = node;
+		while(fast!=null && fast.next!=null)
+		{
+			prevSlow = slow;
+			slow = slow.next;
+			fast = fast.next;
+		}
+		prevSlow.next =null;
+		
+		return slow;
+	}
+	public static TreeNode constructBST(ListNode head)
+	{
+		if(head==null)
+			return null;
+		
+		ListNode mid = getmid(head);
+		TreeNode root = new TreeNode(mid.val);
+		
+		if (head == mid) {
+		      return root;
+		    }
+		root.left = constructBST(head);
+		root.right = constructBST(mid.next);
+		
+		return root;
+	}
+	public static void print(TreeNode root)
+	{
+		if(root==null)
+			return;
+		
+		System.out.println(root.val);
+		print(root.left);
+		print(root.right);
+	}
+	public static void main(String[] args) 
+	{
+		ListNode head1 = new ListNode(-10);
+		head1.next = new ListNode(-3);
+		head1.next.next = new ListNode(0);
+		head1.next.next.next = new ListNode(5);
+		head1.next.next.next.next = new ListNode(9);
+		
+		TreeNode ans = constructBST(head1);
+		
+		print(ans);
+	}
+
+}
+// Optimized Solutioin;
+You can solve this question by using array list just fetch all the data from the list to arrayList why i am doing this just to reduce my time complexity because i can
+get mid element from  arraylist in O(1) time so my cpmplexity will reduce to O(n) 
+And the other things will be same using recursion you are going to do this
