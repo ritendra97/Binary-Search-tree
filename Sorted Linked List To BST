@@ -37,7 +37,7 @@ public class BinarySearchTree
 		{
 			prevSlow = slow;
 			slow = slow.next;
-			fast = fast.next;
+			fast = fast.next.next;
 		}
 		prevSlow.next =null;
 		
