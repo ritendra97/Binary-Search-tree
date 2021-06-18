@@ -1,0 +1,61 @@
+//Remove BST keys outside the given range
+import java.util.*;
+//Remove BST keys outside the given range
+class TreeNode 
+{ 	  
+   int data;
+   TreeNode left, right; 
+   TreeNode(int i) 
+   { 
+      data = i; 
+      left = right = null; 
+   }
+   TreeNode(){};
+}
+
+public class BinaryTree {
+	
+	public static TreeNode range(TreeNode root, int l,int r) {
+		if(root==null)
+			return null;
+		
+		root.left  = range(root.left,l,r);
+		root.right = range(root.right,l,r);
+		
+		if(root.data<l) {
+			TreeNode rroot = root.right;
+			root = null;
+			return rroot;
+		}
+		
+		if(root.data>r) {
+			TreeNode lroot = root.left;
+			root = null;
+			return lroot;
+		}
+		return root;
+	}
+	public static void preOrder(TreeNode node) {
+        if (node == null) {
+            return;
+        }
+        System.out.print(node.data + " ");
+        preOrder(node.left);
+        preOrder(node.right);
+    }
+	
+	public static void main(String[] args)  {
+	
+		TreeNode root  = new TreeNode(20);
+		root.left = new TreeNode(8);
+		root.right = new TreeNode(22);
+		root.left.left = new TreeNode(4);
+		root.left.right = new TreeNode(12);
+		root.left.right.left = new TreeNode(10);
+		root.left.right.right = new TreeNode(14);
+		
+		TreeNode ans = range(root,3,10);
+		preOrder(ans);
+		//System.out.println(ans);
+	}
+}
