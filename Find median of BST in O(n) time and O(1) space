@@ -1,0 +1,144 @@
+//Find median of BST in O(n) time and O(1) space
+import java.util.*;
+
+class Node {
+
+	int data;
+	Node left;
+	Node right;
+
+	public Node(int data, Node left, Node right) {
+		this.data = data;
+		this.left = null;
+		this.right = null;
+	}
+
+	public Node(int data) {
+		this.data = data;
+		this.left = null;
+		this.right = null;
+	}
+}
+
+public class BinaryTree {
+
+	public static int CountSize(Node node) {
+
+		Node curr = node;
+		int count = 0;
+		while (curr != null) {
+
+			if (curr.left == null) {
+
+				count++;
+				curr = curr.right;
+			} else {
+
+				Node pred = curr.left;
+				while (pred.right != null && pred.right != curr) {
+					pred = pred.right;
+				}
+				if (pred.right == null) {
+
+					pred.right = curr;
+					curr = curr.left;
+				} else {
+					pred.right = null;
+					count++;
+					curr = curr.right;
+				}
+			}
+		}
+
+		return count;
+	}
+
+	public static int findMedidan(Node node) {
+
+		if (node == null)
+			return 0;
+
+		int count = CountSize(node);
+		int currCount = 0;
+		Node current = node, pre = null, prev = null;
+
+		while (current != null) {
+			if (current.left == null) {
+				
+				currCount++;
+
+				// check if current node is the median
+				// Odd case
+				if (count % 2 != 0 && currCount == (count + 1) / 2)
+					return prev.data;
+
+				// Even case
+				else if (count % 2 == 0 && currCount == (count / 2) + 1)
+					return (prev.data + current.data) / 2;
+
+				// Update prev for even no. of nodes
+				prev = current;
+
+				// Move to the right
+				current = current.right;
+			} else {
+
+				pre = current.left;
+				while (pre.right != null && pre.right != current)
+					pre = pre.right;
+
+		
+				if (pre.right == null) {
+					pre.right = current;
+					current = current.left;
+				}
+				else {
+					pre.right = null;
+
+					prev = pre;
+
+					// Count current node
+					currCount++;
+
+					// Check if the current node is the median
+					if (count % 2 != 0 && currCount == (count + 1) / 2)
+						return current.data;
+
+					else if (count % 2 == 0 && currCount == (count / 2) + 1)
+						return (prev.data + current.data) / 2;
+
+					// update prev node for the case of even
+					// no. of nodes
+					prev = current;
+					current = current.right;
+
+				} 
+			} 
+		} 
+		return -1;
+	}
+
+	public static void print(Node node) {
+		if (node == null)
+			return;
+
+		System.out.println(node.data);
+		print(node.left);
+
+		print(node.right);
+	}
+
+	public static void main(String[] args) {
+
+		Node root = new Node(50);
+		root.left = new Node(30);
+		root.right = new Node(70);
+		root.left.left = new Node(20);
+		root.left.right = new Node(40);
+		root.right.left = new Node(60);
+		root.right.right = new Node(80);
+
+		System.out.println(findMedidan(root));
+	}
+
+}
