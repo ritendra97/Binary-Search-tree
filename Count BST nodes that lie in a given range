@@ -1,0 +1,69 @@
+//Count BST nodes that lie in a given range
+
+//Time complexity of the above program is O(h + k) where h is height of BST and k is number of nodes in given range.
+
+import java.util.*;
+
+class Node {
+
+	int data;
+	Node left;
+	Node right;
+
+	public Node(int data, Node left, Node right) {
+		this.data = data;
+		this.left = null;
+		this.right = null;
+	}
+
+	public Node(int data) {
+		this.data = data;
+		this.left = null;
+		this.right = null;
+	}
+}
+
+public class BinaryTree {
+
+	static int count = 0;
+
+	public static void range(Node node, int lo, int h) {
+		
+		if(node==null)
+			return;
+		if (lo > node.data && h > node.data) {
+			range(node.right, lo, h);
+		} else if (lo < node.data && h < node.data) {
+			range(node.left, lo, h);
+		} else {
+			range(node.left,lo, h);
+			count++;
+			range(node.right,lo, h);
+		}
+	}
+
+	public static void print(Node node) {
+		if (node == null)
+			return;
+
+		System.out.println(node.data);
+		print(node.left);
+
+		print(node.right);
+	}
+
+	public static void main(String[] args) {
+
+		Node root = new Node(10);
+		root.left = new Node(5);
+		root.right = new Node(50);
+		root.left.left = new Node(1);
+		root.right.left = new Node(40);
+		root.right.right = new Node(100);
+
+		range(root,5,45);
+		System.out.println(count);
+	
+	}
+
+}
