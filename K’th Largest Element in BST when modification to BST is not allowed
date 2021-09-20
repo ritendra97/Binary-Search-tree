@@ -41,3 +41,68 @@ public class BST
 	}
 
 }
+
+// WHen Modification allowed 
+
+K-th Largest Element in Binary Search Tree
+class Node
+{
+	int data;
+	Node left;
+	Node right;
+	Node(int data)
+	{
+		this.data=data;
+	}
+}
+public class BST 
+{
+	static Node answer(Node root,int k)
+	{
+		Node curr=root;
+		Node kthlargest = null;
+		int count=0;
+		while(curr!=null)
+		{
+			if(curr.right==null)
+			{
+				if(++count==k)
+					kthlargest=curr;
+				curr=curr.left;
+			}
+			else
+			{
+				Node suc = curr.right;
+				while(suc.left!=null && suc.left!=curr)
+				{
+					suc=suc.left;
+				}
+				if(suc.left==null)
+				{
+					suc.left=curr;
+					curr=curr.right;
+				}
+				else
+				{
+					suc.left=null;
+					if(++count==k)
+						kthlargest=curr;
+					curr=curr.left;
+				}
+			}
+		}
+		return kthlargest;
+	}
+	public static void main(String[] args) 
+	{
+		Node root = new Node(4);  
+	    root.left = new Node(2);  
+	    root.right = new Node(7);  
+	    root.left.left = new Node(1);  
+	    root.left.right = new Node(3);  
+	    root.right.left = new Node(6);  
+	    root.right.right = new Node(10);
+	    Node ans=answer(root,4);
+	    System.out.println(ans.data);
+	}
+}
