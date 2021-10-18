@@ -1,0 +1,83 @@
+Time Complexity:- O(n^2)
+Space Complexity: O(1)
+
+import java.util.*;
+
+public class Array {
+	
+	static class TreeNode {
+
+		int data;
+		TreeNode left;
+		TreeNode right;
+
+		TreeNode(int data) {
+			this.data = data;
+			this.left = null;
+			this.right = null;
+		}
+	}
+
+	static int ind = 0;
+	public static TreeNode helper(int si, int ei, int preOrder[]) {
+		
+		if(ind>=preOrder.length || si>ei)
+			return null;
+		
+		TreeNode root = new TreeNode(preOrder[ind++]);
+		
+		int i;
+        for (i = si; i <= ei; ++i) {
+            if (preOrder[i] > root.data) {
+                break;
+            }
+        }
+		
+		root.left = helper(si,i-1, preOrder);
+		root.right = helper(i+1,ei, preOrder);
+		
+		return root;
+	}
+	
+	public static void Display(TreeNode root)
+	{
+		if(root==null)
+			return;
+		
+		System.out.println(root.data);
+		Display(root.left);
+		Display(root.right);
+		
+	}
+	
+	public static void main(String[] args) {
+		
+		int preOrder[] = {3, 2, 1 ,6, 7, 8};
+		
+		TreeNode node = helper(0,preOrder.length-1,preOrder);
+		Display(node);
+	}
+}
+
+Time Complexity:- O(n)
+Space Complexity: O(1)
+
+public static int ind = 0;
+  public static TreeNode helper(int lr, int rr, int[] preorder) {
+
+    if (ind >= preorder.length || preorder[ind] < lr || preorder[ind] > rr || lr > rr)  return null;
+
+    TreeNode root = new TreeNode(preorder[ind++]);
+
+    root.left = helper(lr, root.val, preorder);
+    root.right = helper(root.val, rr, preorder);
+
+    return root;
+  }
+
+  public static TreeNode bstFromPreorder(int[] preorder) {
+
+    TreeNode ans = helper(Integer.MIN_VALUE, Integer.MAX_VALUE, preorder);
+
+    return ans;
+  }
